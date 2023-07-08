@@ -1,0 +1,170 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  email String [unique, not null]
+  hashedPassword String [not null]
+  hashedRefreshToken String
+  token String [unique, not null]
+  role Role [not null, default: 'SIMPLE_USER']
+  profile Profile
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Profile {
+  id String [pk]
+  pseudo String [unique, not null]
+  photoUrl String
+  gamePoint Int [not null, default: 0]
+  userId String [unique, not null]
+  user User [not null]
+  itinaryIDs String[] [not null]
+  itinaries Itinary [not null]
+  spots Spot [not null]
+  ratings Rating [not null]
+  favorites Favorite [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Spot {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  isCanPark Boolean [not null, default: false]
+  isHidden Boolean [not null, default: false]
+  category CategoriesSpotAndTag [not null]
+  profile Profile [not null]
+  profileId String [unique, not null]
+  itinaryIDs String[] [not null]
+  itinaries Itinary [not null]
+  lat Float [not null]
+  lng Float [not null]
+  region String [not null]
+  address String [not null]
+  averageRating Float [not null, default: 0]
+  spotPicture SpotPicture [not null]
+  ratings Rating [not null]
+  favorites Favorite [not null]
+  tags TagsOnSpots [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table TagsOnSpots {
+  id String [pk]
+  spot Spot
+  tag Tag [not null]
+  spotId String
+  tagId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Tag {
+  id String [pk]
+  name String [unique, not null]
+  tagPictureUrl String [not null]
+  category CategoriesSpotAndTag [not null]
+  spots TagsOnSpots [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table SpotPicture {
+  id String [pk]
+  url String [not null]
+  spot Spot [not null]
+  spotId String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Rating {
+  id String [pk]
+  rate Int [not null]
+  profile Profile [not null]
+  profileId String [unique, not null]
+  spot Spot [not null]
+  spotId String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Favorite {
+  id String [pk]
+  profile Profile [not null]
+  profileId String [unique, not null]
+  spot Spot [not null]
+  spotId String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Product {
+  id String [pk]
+  photoUrl String
+  gamePoints Int [not null]
+  price Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table Itinary {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  gamePoint Int
+  photoUrl String
+  profileIDs String[] [not null]
+  profiles Profile [not null]
+  spotIDs String[] [not null]
+  spots Spot [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Enum Level {
+  Warning
+  Info
+  Error
+}
+
+Enum CategoriesSpotAndTag {
+  SPARE_TIME_SPOT
+  RESOURCES_SPOT
+}
+
+Enum Role {
+  SIMPLE_USER
+  USER_ADMIN
+}
+
+Ref: Profile.userId - User.id [delete: Cascade]
+
+Ref: Profile.itinaryIDs > Itinary.id
+
+Ref: Spot.profileId > Profile.id [delete: Cascade]
+
+Ref: Spot.itinaryIDs > Itinary.id
+
+Ref: TagsOnSpots.spotId > Spot.id [delete: Cascade]
+
+Ref: TagsOnSpots.tagId > Tag.id [delete: Cascade]
+
+Ref: SpotPicture.spotId > Spot.id [delete: Cascade]
+
+Ref: Rating.profileId > Profile.id [delete: Cascade]
+
+Ref: Rating.spotId > Spot.id [delete: Cascade]
+
+Ref: Favorite.profileId > Profile.id [delete: Cascade]
+
+Ref: Favorite.spotId > Spot.id [delete: Cascade]
+
+Ref: Itinary.profileIDs > Profile.id
+
+Ref: Itinary.spotIDs > Spot.id
