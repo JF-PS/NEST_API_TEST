@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { AuthGuard } from '@nestjs/passport';
 import { ExecutionContext } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';

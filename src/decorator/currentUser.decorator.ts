@@ -1,7 +1,7 @@
-/* eslint-disable prettier/prettier */
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
-import { JwtPayloadWithRefreshToken } from '../types';
 import { GqlExecutionContext } from '@nestjs/graphql';
+
+import { JwtPayloadWithRefreshToken } from 'src/types';
 
 export const CurrentUser = createParamDecorator(
   (

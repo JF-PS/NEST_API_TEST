@@ -3,11 +3,11 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
-import { PrismaService } from './prisma/prisma.service';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { PrismaService } from './service/prisma.service';
+import { AuthModule } from 'src/module/auth.module';
+import { UserModule } from 'src/module/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { AccessTokenGuard } from './auth/guards/accessToken.guard';
+import { AccessTokenGuard } from 'src/guard/accessToken.guard';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({

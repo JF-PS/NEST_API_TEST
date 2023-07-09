@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@apollo/server': ^4.7.5
   '@nestjs/apollo': ^12.0.7
-  '@nestjs/cli': ^10.0.0
+  '@nestjs/cli': ^10.1.7
   '@nestjs/common': ^10.0.0
   '@nestjs/config': ^3.0.0
   '@nestjs/core': ^10.0.0

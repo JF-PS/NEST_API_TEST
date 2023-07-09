@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/service/prisma.service';
 import { TokenService } from 'src/service/token.service';
 import { AuthResolver } from 'src/resolver/auth.resolver';
 import { AuthBusiness } from 'src/business/auth.business';

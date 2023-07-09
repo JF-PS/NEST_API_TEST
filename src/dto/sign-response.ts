@@ -1,7 +1,7 @@
-/* eslint-disable prettier/prettier */
 import { Field, ObjectType } from '@nestjs/graphql';
-import { User } from './../../user/user.entity';
 import { IsNotEmpty, IsString } from 'class-validator';
+
+import { User } from 'src/entity/user.entity';
 
 @ObjectType()
 export class SignResponse {

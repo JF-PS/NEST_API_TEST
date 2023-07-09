@@ -2,11 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type LogoutResponse {
   loggedOut: Boolean!
 }
@@ -24,8 +19,7 @@ type NewTokensResponse {
 }
 
 type Query {
-  auth(id: Int!): Auth!
-  hello: String!
+  sayHello: String!
 }
 
 input SignInInput {
