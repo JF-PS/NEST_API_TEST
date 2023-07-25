@@ -1,0 +1,52 @@
+import { Resolver, Mutation, Query, Args } from '@nestjs/graphql';
+
+import { UserEntity } from '../entity/user.entity';
+import { Public } from '../decorator/public.decorator';
+import { SpotEntity } from 'src/entity/spot.entity';
+import { DeleteSpotResponse } from 'src/dto/delete-spot-response';
+import { SpotByIdResponse } from 'src/dto/spotByIdResponse';
+import { SpotListInput } from 'src/dto/spot-list-input';
+import { SpotBusiness } from './../business/spot.business';
+
+@Resolver(() => UserEntity)
+export class AuthResolver {
+  constructor(private readonly spotBusiness: SpotBusiness) {}
+
+  @Query(() => SpotByIdResponse)
+  spot(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<SpotByIdResponse> {
+    return this.spotBusiness.getById(id);
+  }
+
+  @Query(() => [SpotEntity])
+  spots(
+    @Args('spotListInput') spotListInput: SpotListInput,
+  ): Promise<[SpotEntity]> {
+    return this.spotBusiness.getAll(spotListInput);
+  }
+
+  @Public()
+  @Mutation(() => SpotEntity)
+  createSpot(
+    @Args('createSpotInput') createSpotInput: SpotEntity,
+  ): Promise<SpotEntity> {
+    return this.spotBusiness.create(createSpotInput);
+  }
+
+  @Public()
+  @Mutation(() => SpotEntity)
+  updateSpot(
+    @Args('updateSpotInput') updateSpotInput: SpotEntity,
+  ): Promise<SpotEntity> {
+    return this.spotBusiness.update(updateSpotInput);
+  }
+
+  @Public()
+  @Mutation(() => DeleteSpotResponse)
+  deleteSpot(
+    @Args('id', { type: () => String }) id: string,
+  ): Promise<DeleteSpotResponse> {
+    return this.spotBusiness.delete(id);
+  }
+}

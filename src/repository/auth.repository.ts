@@ -1,39 +1,57 @@
 import { Injectable } from '@nestjs/common';
 
-import { User } from '@prisma/client';
-import { GetResult } from '@prisma/client/runtime';
+import { UserEntity } from 'src/entity/user.entity';
 import { PrismaService } from 'src/service/prisma.service';
+import { plainToClass } from 'src/utils/plain-to-class';
 
 @Injectable()
 export class AuthRepository {
   constructor(private prisma: PrismaService) {}
 
-  async getOneByEmail(email: string): Promise<GetResult<User, never>> {
-    return this.prisma.user.findUnique({ where: { email } });
+  async getOneByEmail(email: string): Promise<UserEntity> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      include: { profile: true },
+    });
+    return plainToClass(user, UserEntity);
   }
 
-  async getOneById(userId: string): Promise<GetResult<User, never>> {
-    return this.prisma.user.findUnique({ where: { id: userId } });
+  async getOneById(userId: string): Promise<UserEntity> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { profile: true },
+    });
+    return plainToClass(user, UserEntity);
   }
 
   async create(
-    username: string,
+    pseudo: string,
     hashedPassword: string,
     email: string,
-  ): Promise<GetResult<User, never>> {
-    return this.prisma.user.create({
-      data: { username, hashedPassword, email },
+  ): Promise<UserEntity> {
+    const user = await this.prisma.user.create({
+      data: {
+        hashedPassword,
+        email,
+        profile: { create: { pseudo } },
+      },
+      include: { profile: true },
     });
+
+    return plainToClass(user, UserEntity);
   }
 
   async updateRefreshToken(
     userId: string,
     hashedRefreshToken: string,
-  ): Promise<GetResult<User, never>> {
-    return this.prisma.user.update({
+  ): Promise<UserEntity> {
+    const user = await this.prisma.user.update({
       where: { id: userId },
       data: { hashedRefreshToken },
+      include: { profile: true },
     });
+
+    return plainToClass(user, UserEntity);
   }
 
   async disconnect(userId: string): Promise<boolean> {

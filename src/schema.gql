@@ -2,6 +2,35 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type FavoriteEntity {
+  createdAt: DateTime!
+  id: String!
+  profile: ProfileEntity!
+  profileId: String!
+  spot: SpotEntity!
+  spotId: String!
+  updatedAt: DateTime!
+}
+
+type ItinaryEntity {
+  createdAt: DateTime!
+  description: String!
+  gamePoint: Float
+  id: String!
+  name: String!
+  photoUrl: String
+  profileIDs: [String!]!
+  profiles: [ProfileEntity!]
+  spotIDs: [String!]!
+  spots: [SpotEntity!]
+  updatedAt: DateTime!
+}
+
 type LogoutResponse {
   loggedOut: Boolean!
 }
@@ -18,8 +47,35 @@ type NewTokensResponse {
   refreshToken: String!
 }
 
+type ProfileEntity {
+  createdAt: DateTime!
+  favorites: [FavoriteEntity!]
+  gamePoint: Float!
+  id: String!
+  itinaryIDs: [String!]!
+  itineraries: [ItinaryEntity!]
+  photoUrl: String
+  pseudo: String!
+  ratings: [RatingEntity!]
+  spots: [SpotEntity!]
+  updatedAt: DateTime!
+  user: UserEntity!
+  userId: String!
+}
+
 type Query {
   sayHello: String!
+}
+
+type RatingEntity {
+  createdAt: DateTime!
+  id: String!
+  profile: ProfileEntity!
+  profileId: String!
+  rate: Float!
+  spot: SpotEntity!
+  spotId: String!
+  updatedAt: DateTime!
 }
 
 input SignInInput {
@@ -30,17 +86,65 @@ input SignInInput {
 type SignResponse {
   accessToken: String!
   refreshToken: String!
-  user: User!
+  user: UserEntity!
 }
 
 input SignUpInput {
   email: String!
   password: String!
-  username: String!
+  pseudo: String!
 }
 
-type User {
-  email: String!
+type SpotEntity {
+  address: String!
+  averageRating: Float!
+  category: String!
+  createdAt: DateTime!
+  description: String!
+  favorites: [FavoriteEntity!]
   id: String!
-  username: String!
+  isCanPark: Boolean!
+  isHidden: Boolean!
+  itinaries: [ItinaryEntity!]
+  itinaryIDs: [String!]!
+  lat: Float!
+  lng: Float!
+  name: String!
+  profile: ProfileEntity!
+  profileId: String!
+  ratings: [RatingEntity!]
+  region: String!
+  spotPicture: [SpotPictureEntity!]
+  tags: [TagEntity!]
+  updatedAt: DateTime!
+}
+
+type SpotPictureEntity {
+  createdAt: DateTime!
+  id: String!
+  spot: SpotEntity!
+  spotId: String!
+  updatedAt: DateTime!
+  url: String!
+}
+
+type TagEntity {
+  category: String!
+  createdAt: DateTime!
+  id: String!
+  name: String!
+  spots: [SpotEntity!]
+  tagPictureUrl: String!
+  updatedAt: DateTime!
+}
+
+type UserEntity {
+  createdAt: DateTime!
+  email: String!
+  hashedPassword: String!
+  hashedRefreshToken: String
+  id: String!
+  profile: ProfileEntity
+  role: String!
+  updatedAt: DateTime!
 }

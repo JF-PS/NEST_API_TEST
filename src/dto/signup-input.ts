@@ -6,7 +6,7 @@ export class SignUpInput {
   @IsNotEmpty()
   @IsString()
   @Field()
-  username: string;
+  pseudo: string;
 
   @IsNotEmpty()
   @IsString()

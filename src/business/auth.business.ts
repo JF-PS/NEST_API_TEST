@@ -1,13 +1,18 @@
-import { User } from '@prisma/client';
 import { hash, compare } from 'bcryptjs';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { SignUpInput } from 'src/dto/signup-input';
 import { SignInInput } from 'src/dto/signin-input';
+import { UserEntity } from 'src/entity/user.entity';
 import { SignResponse } from 'src/dto/sign-response';
+import ErrorService from 'src/service/error.service';
+import { codeErrors } from 'src/enum/code-errors.enum';
+import { LogoutResponse } from 'src/dto/logout-response';
 import { TokenService } from 'src/service/token.service';
 import { AuthRepository } from 'src/repository/auth.repository';
-import { LogoutResponse } from 'src/dto/logout-response';
+
+const { USER_ALREADY_EXISTS, ACCESS_DENIED, AUTHENTICATION_DENIED } =
+  codeErrors;
 
 @Injectable()
 export class AuthBusiness {
@@ -17,11 +22,16 @@ export class AuthBusiness {
   ) {}
 
   async signup(signUpInput: SignUpInput): Promise<SignResponse> {
-    const { username, password, email } = signUpInput;
+    const { pseudo, password, email } = signUpInput;
     const hashedPassword = await hash(password, 10);
 
+    const userAlreadyExist = await this.authRepository.getOneByEmail(email);
+    if (userAlreadyExist) {
+      throw new ErrorService(USER_ALREADY_EXISTS);
+    }
+
     const user = await this.authRepository.create(
-      username,
+      pseudo,
       hashedPassword,
       email,
     );
@@ -34,13 +44,13 @@ export class AuthBusiness {
     const user = await this.authRepository.getOneByEmail(email);
 
     if (!user) {
-      throw new ForbiddenException('Access Denied');
+      throw new ErrorService(AUTHENTICATION_DENIED);
     }
 
     const doPasswordsMatch = await compare(password, user.hashedPassword);
 
     if (!doPasswordsMatch) {
-      throw new ForbiddenException('Access Denied');
+      throw new ErrorService(AUTHENTICATION_DENIED);
     }
 
     return this.refreshAuthAccess(user);
@@ -49,18 +59,18 @@ export class AuthBusiness {
   async getNewTokens(userId: string, rt: string): Promise<SignResponse> {
     const user = await this.authRepository.getOneById(userId);
     if (!user) {
-      throw new ForbiddenException('Access Denied');
+      throw new ErrorService(ACCESS_DENIED);
     }
     const doRefreshTokensMatch = await compare(rt, user.hashedRefreshToken);
 
     if (!doRefreshTokensMatch) {
-      throw new ForbiddenException('Access Denied');
+      throw new ErrorService(ACCESS_DENIED);
     }
 
     return this.refreshAuthAccess(user);
   }
 
-  async refreshAuthAccess(user: User): Promise<SignResponse> {
+  async refreshAuthAccess(user: UserEntity): Promise<SignResponse> {
     const { accessToken, refreshToken } = await this.tokenService.create(
       user.id,
       user.email,
