@@ -55,8 +55,6 @@ type ProfileEntity {
 }
 
 type Query {
-  getPrivateInfo: String!
-  sayHello: String!
   spotByPk(id: String!): SpotEntity!
 }
 

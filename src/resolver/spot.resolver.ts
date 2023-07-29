@@ -31,7 +31,6 @@ export class SpotResolver {
   //   return this.spotBusiness.getAll(spotListInput);
   // }
 
-  @Public()
   @UseGuards(RefreshTokenGuard)
   @Mutation(() => SpotEntity)
   insertSpot(
@@ -59,11 +58,5 @@ export class SpotResolver {
     @CurrentProfileId() profileId: string,
   ): Promise<DeleteSpotResponse> {
     return this.spotBusiness.delete(id, profileId);
-  }
-
-  @UseGuards(RefreshTokenGuard)
-  @Query(() => String)
-  getPrivateInfo(@CurrentUser('email') email: string) {
-    return `GET the email: [${email}].`;
   }
 }

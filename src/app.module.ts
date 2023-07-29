@@ -27,7 +27,7 @@ import { RefreshTokenGuard } from './guard/refreshToken.guard';
 
   providers: [
     PrismaService,
-    { provide: APP_GUARD, useClass: RefreshTokenGuard },
+    // { provide: APP_GUARD, useClass: RefreshTokenGuard },
   ],
 })
 export class AppModule {}

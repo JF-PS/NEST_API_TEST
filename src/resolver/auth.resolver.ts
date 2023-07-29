@@ -12,6 +12,7 @@ import { CurrentUserId } from 'src/decorator/currentUserId.decorator';
 import { CurrentUser } from 'src/decorator/currentUser.decorator';
 import { RefreshTokenGuard } from 'src/guard/refreshToken.guard';
 import { NewTokensResponse } from 'src/dto/newTokensResponse';
+import { AccessTokenGuard } from 'src/guard/accessToken.guard';
 
 @Resolver(() => UserEntity)
 export class AuthResolver {
@@ -43,10 +44,5 @@ export class AuthResolver {
     @CurrentUser('refreshToken') refreshToken: string,
   ) {
     return this.authBusiness.getNewTokens(userId, refreshToken);
-  }
-
-  @Query(() => String)
-  sayHello(): string {
-    return 'Hello World!';
   }
 }
