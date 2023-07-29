@@ -9,9 +9,9 @@ export class TokenService {
     private configService: ConfigService,
   ) {}
 
-  async create(userId: string, email: string) {
+  async create(userId: string, email: string, profileId: string) {
     const accessToken = this.jwtService.sign(
-      { userId, email },
+      { userId, email, profileId },
       {
         expiresIn: '1h',
         secret: this.configService.get('ACCESS_TOKEN_SECRET'),
@@ -19,7 +19,7 @@ export class TokenService {
     );
 
     const refreshToken = this.jwtService.sign(
-      { userId, email, accessToken },
+      { userId, email, profileId, accessToken },
       {
         expiresIn: '7d',
         secret: this.configService.get('REFRESH_TOKEN_SECRET'),

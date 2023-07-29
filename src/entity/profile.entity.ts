@@ -6,15 +6,12 @@ import {
   Column,
   ManyToOne,
   OneToMany,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 
 import { UserEntity } from './user.entity';
 import { SpotEntity } from './spot.entity';
 import { RatingEntity } from './rating.entity';
 import { FavoriteEntity } from './favorite.entity';
-import { ItinaryEntity } from './itinary.entity';
 
 @ObjectType()
 @Entity('Profile')
@@ -64,12 +61,4 @@ export class ProfileEntity implements Profile {
   @Field()
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
-
-  @Field(() => [ItinaryEntity], { nullable: true })
-  @ManyToMany(() => ItinaryEntity, (itinerary) => itinerary.profiles)
-  @JoinTable()
-  itineraries: ItinaryEntity[];
-
-  @Field(() => [String])
-  itinaryIDs: string[];
 }

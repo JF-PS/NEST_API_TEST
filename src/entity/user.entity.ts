@@ -1,12 +1,6 @@
 import { User, Role } from '@prisma/client';
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  OneToOne,
-  JoinColumn,
-} from 'typeorm';
+import { PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 
 import { ProfileEntity } from './profile.entity';
 

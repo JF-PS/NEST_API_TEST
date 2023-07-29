@@ -7,6 +7,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type DeleteSpotResponse {
+  deleted: Boolean!
+}
+
 type FavoriteEntity {
   createdAt: DateTime!
   id: String!
@@ -17,29 +21,18 @@ type FavoriteEntity {
   updatedAt: DateTime!
 }
 
-type ItinaryEntity {
-  createdAt: DateTime!
-  description: String!
-  gamePoint: Float
-  id: String!
-  name: String!
-  photoUrl: String
-  profileIDs: [String!]!
-  profiles: [ProfileEntity!]
-  spotIDs: [String!]!
-  spots: [SpotEntity!]
-  updatedAt: DateTime!
-}
-
 type LogoutResponse {
   loggedOut: Boolean!
 }
 
 type Mutation {
+  deleteSpot(id: String!): DeleteSpotResponse!
   getNewTokens: NewTokensResponse!
+  insertSpot(insertSpotInput: SpotInput!): SpotEntity!
   logout(id: String!): LogoutResponse!
   signIn(signInInput: SignInInput!): SignResponse!
   signUp(signUpInput: SignUpInput!): SignResponse!
+  updateSpot(updateSpotInput: SpotInput!): SpotEntity!
 }
 
 type NewTokensResponse {
@@ -52,8 +45,6 @@ type ProfileEntity {
   favorites: [FavoriteEntity!]
   gamePoint: Float!
   id: String!
-  itinaryIDs: [String!]!
-  itineraries: [ItinaryEntity!]
   photoUrl: String
   pseudo: String!
   ratings: [RatingEntity!]
@@ -64,7 +55,9 @@ type ProfileEntity {
 }
 
 type Query {
+  getPrivateInfo: String!
   sayHello: String!
+  spotByPk(id: String!): SpotEntity!
 }
 
 type RatingEntity {
@@ -105,8 +98,6 @@ type SpotEntity {
   id: String!
   isCanPark: Boolean!
   isHidden: Boolean!
-  itinaries: [ItinaryEntity!]
-  itinaryIDs: [String!]!
   lat: Float!
   lng: Float!
   name: String!
@@ -119,12 +110,32 @@ type SpotEntity {
   updatedAt: DateTime!
 }
 
+input SpotInput {
+  address: String!
+  averageRating: Float!
+  category: String!
+  description: String!
+  id: String
+  isCanPark: Boolean!
+  isHidden: Boolean!
+  lat: Float!
+  lng: Float!
+  name: String!
+  region: String!
+  spotPicture: [SpotPictureInput!]
+  tags: [TagInput!]
+}
+
 type SpotPictureEntity {
   createdAt: DateTime!
   id: String!
   spot: SpotEntity!
   spotId: String!
   updatedAt: DateTime!
+  url: String!
+}
+
+input SpotPictureInput {
   url: String!
 }
 
@@ -136,6 +147,10 @@ type TagEntity {
   spots: [SpotEntity!]
   tagPictureUrl: String!
   updatedAt: DateTime!
+}
+
+input TagInput {
+  id: String!
 }
 
 type UserEntity {

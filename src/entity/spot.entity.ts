@@ -6,16 +6,16 @@ import {
   Column,
   ManyToOne,
   ManyToMany,
-  JoinTable,
   OneToMany,
 } from 'typeorm';
 
 import { TagEntity } from './tag.entity';
 import { RatingEntity } from './rating.entity';
 import { ProfileEntity } from './profile.entity';
-import { ItinaryEntity } from './itinary.entity';
 import { FavoriteEntity } from './favorite.entity';
 import { SpotPictureEntity } from './spot-picture.entity';
+
+export class SpotEntityMixin {}
 
 @ObjectType()
 @Entity('Spot')
@@ -52,11 +52,6 @@ export class SpotEntity implements Spot {
   @Column()
   profileId: string;
 
-  @Field(() => [ItinaryEntity], { nullable: true })
-  @ManyToMany(() => ItinaryEntity, (itinary) => itinary.spots)
-  @JoinTable()
-  itinaries?: ItinaryEntity[] | null;
-
   @Field()
   @Column('float')
   lat: number;
@@ -92,9 +87,6 @@ export class SpotEntity implements Spot {
     cascade: true,
   })
   favorites?: FavoriteEntity[] | null;
-
-  @Field(() => [String])
-  itinaryIDs: string[];
 
   @Field(() => [TagEntity], { nullable: true })
   @ManyToMany(() => TagEntity, (tag) => tag.spots)

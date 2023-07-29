@@ -25,7 +25,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
   ): Promise<JwtPayloadWithRefreshToken> {
     const refreshToken = req
       ?.get('authorization')
-      ?.replace('Bearer', '')
+      ?.replace('Bearer ', '')
       .trim();
 
     return { ...payload, refreshToken };

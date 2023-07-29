@@ -6,9 +6,10 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaService } from './service/prisma.service';
 import { AuthModule } from 'src/module/auth.module';
 import { UserModule } from 'src/module/user.module';
+import { SpotModule } from 'src/module/spot.module';
 import { ConfigModule } from '@nestjs/config';
-import { AccessTokenGuard } from 'src/guard/accessToken.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { RefreshTokenGuard } from './guard/refreshToken.guard';
 
 @Module({
   imports: [
@@ -19,13 +20,14 @@ import { APP_GUARD } from '@nestjs/core';
       sortSchema: true,
     }),
     AuthModule,
+    SpotModule,
     UserModule,
   ],
   controllers: [],
 
   providers: [
     PrismaService,
-    { provide: APP_GUARD, useClass: AccessTokenGuard },
+    { provide: APP_GUARD, useClass: RefreshTokenGuard },
   ],
 })
 export class AppModule {}

@@ -74,6 +74,7 @@ export class AuthBusiness {
     const { accessToken, refreshToken } = await this.tokenService.create(
       user.id,
       user.email,
+      user.profile.id,
     );
 
     const hashedRefreshToken = await hash(refreshToken, 10);
