@@ -6,6 +6,7 @@ import { codeErrors } from 'src/enum/code-errors.enum';
 import { SpotInput } from 'src/dto/input/spot/spot-input';
 import { SpotRepository } from 'src/repository/spot.repository';
 import { DeleteSpotResponse } from 'src/dto/delete-spot-response';
+import { SpotsInput } from 'src/dto/input/spot/spots-input';
 
 const { SPOT_NOT_FOUND, SPOT_ID_NOT_MATCH_PROFILE_ID } = codeErrors;
 
@@ -20,9 +21,12 @@ export class SpotBusiness {
     return this.spotRepository.getById(id, profileId);
   }
 
-  // async getAll(spotListInput: SpotListInput): Promise<[SpotEntity]> {
-  //   return null;
-  // }
+  async getAll(
+    spotsInput: SpotsInput,
+    profileId: string | undefined,
+  ): Promise<SpotEntity[]> {
+    return this.spotRepository.getAll(spotsInput, profileId);
+  }
 
   async insert(
     insertSpotInput: SpotInput,

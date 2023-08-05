@@ -8,8 +8,6 @@ import { AuthModule } from 'src/module/auth.module';
 import { UserModule } from 'src/module/user.module';
 import { SpotModule } from 'src/module/spot.module';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
-import { RefreshTokenGuard } from './guard/refreshToken.guard';
 
 @Module({
   imports: [
@@ -23,11 +21,6 @@ import { RefreshTokenGuard } from './guard/refreshToken.guard';
     SpotModule,
     UserModule,
   ],
-  controllers: [],
-
-  providers: [
-    PrismaService,
-    // { provide: APP_GUARD, useClass: RefreshTokenGuard },
-  ],
+  providers: [PrismaService],
 })
 export class AppModule {}

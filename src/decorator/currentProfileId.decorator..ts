@@ -7,6 +7,6 @@ export const CurrentProfileId = createParamDecorator(
     const ctx = GqlExecutionContext.create(context);
     const req = ctx.getContext().req;
     const user = req.user as JwtPayload;
-    return user.profileId;
+    return user?.profileId || undefined;
   },
 );

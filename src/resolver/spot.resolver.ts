@@ -8,7 +8,8 @@ import { CurrentProfileId } from 'src/decorator/currentProfileId.decorator.';
 import { UseGuards } from '@nestjs/common';
 import { RefreshTokenGuard } from 'src/guard/refreshToken.guard';
 import { DeleteSpotResponse } from 'src/dto/delete-spot-response';
-import { CurrentUser } from 'src/decorator/currentUser.decorator';
+import { SpotsInput } from 'src/dto/input/spot/spots-input';
+import { AccessTokenGuard } from 'src/guard/accessToken.guard';
 
 @Resolver(() => SpotEntity)
 export class SpotResolver {
@@ -16,7 +17,7 @@ export class SpotResolver {
 
   @Public()
   @Query(() => SpotEntity)
-  @UseGuards(RefreshTokenGuard)
+  @UseGuards(AccessTokenGuard)
   spotByPk(
     @Args('id', { type: () => String }) id: string,
     @CurrentProfileId() profileId: string | undefined,
@@ -24,12 +25,15 @@ export class SpotResolver {
     return this.spotBusiness.getById(id, profileId);
   }
 
-  // @Query(() => [SpotEntity])
-  // spots(
-  //   @Args('spotListInput') spotListInput: SpotListInput,
-  // ): Promise<[SpotEntity]> {
-  //   return this.spotBusiness.getAll(spotListInput);
-  // }
+  @Public()
+  @Query(() => [SpotEntity])
+  @UseGuards(AccessTokenGuard)
+  spots(
+    @Args('spotsInput') spotsInput: SpotsInput,
+    @CurrentProfileId() profileId: string | undefined,
+  ): Promise<SpotEntity[]> {
+    return this.spotBusiness.getAll(spotsInput, profileId);
+  }
 
   @UseGuards(RefreshTokenGuard)
   @Mutation(() => SpotEntity)

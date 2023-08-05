@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { SpotInput } from 'src/dto/input/spot/spot-input';
+import { SpotsInput } from 'src/dto/input/spot/spots-input';
 import { SpotEntity } from 'src/entity/spot.entity';
 import { PrismaService } from 'src/service/prisma.service';
 import { plainToClass, plainToClassMany } from 'src/utils/plain-to-class';
@@ -45,60 +45,66 @@ export class SpotRepository {
     return plainToClass(spot, SpotEntity);
   }
 
-  // async getAll(
-  //   filterData: Prisma.SpotWhereInput,
-  //   paginationData: Pick<Prisma.SpotFindManyArgs, 'take' | 'skip'>,
-  //   orderBy: Prisma.SortOrder,
-  //   searchValue: string,
-  //   tagListId: string[],
-  //   profileId?: string | undefined,
-  // ): Promise<SpotEntity[]> {
-  //   const spotList = await this.prisma.spot.findMany({
-  //     orderBy: {
-  //       averageRating: orderBy,
-  //     },
+  async getAll(
+    spotsInput: SpotsInput,
+    profileId?: string | undefined,
+  ): Promise<SpotEntity[]> {
+    const {
+      orderBy = 'asc',
+      searchValue = '',
+      tagListId = [],
+      take = 10,
+      skip = 0,
+      ...filterData
+    } = spotsInput;
 
-  //     where: {
-  //       ...filterData,
-  //       name: {
-  //         contains: searchValue,
-  //       },
-  //       ...(tagListId && tagListId.length
-  //         ? {
-  //             tags: {
-  //               some: {
-  //                 OR: tagListId.map((tagId) => {
-  //                   return {
-  //                     tag: {
-  //                       id: tagId,
-  //                     },
-  //                   };
-  //                 }),
-  //               },
-  //             },
-  //           }
-  //         : {}),
-  //     },
+    const spotList = await this.prisma.spot.findMany({
+      orderBy: {
+        averageRating: orderBy,
+      },
 
-  //     ...paginationData,
+      where: {
+        ...filterData,
+        name: {
+          contains: searchValue,
+        },
+        ...(tagListId && tagListId.length
+          ? {
+              tags: {
+                some: {
+                  OR: tagListId.map((tagId) => {
+                    return {
+                      tag: {
+                        id: tagId,
+                      },
+                    };
+                  }),
+                },
+              },
+            }
+          : {}),
+      },
 
-  //     include: {
-  //       spotPicture: true,
-  //       tags: {
-  //         include: {
-  //           tag: true,
-  //         },
-  //       },
-  //       favorites: {
-  //         where: {
-  //           profileId,
-  //         },
-  //       },
-  //     },
-  //   });
+      take,
+      skip,
 
-  //   return plainToClassMany(spotList, SpotEntity);
-  // }
+      include: {
+        spotPicture: true,
+        tags: {
+          include: {
+            tag: true,
+          },
+        },
+        favorites: {
+          where: {
+            profileId,
+          },
+        },
+      },
+    });
+
+    return plainToClassMany(spotList, SpotEntity);
+  }
 
   // async updateAverageRatingBySpotId(
   //   spotId: string,

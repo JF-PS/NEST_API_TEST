@@ -56,6 +56,7 @@ type ProfileEntity {
 
 type Query {
   spotByPk(id: String!): SpotEntity!
+  spots(spotsInput: SpotsInput!): [SpotEntity!]!
 }
 
 type RatingEntity {
@@ -135,6 +136,21 @@ type SpotPictureEntity {
 
 input SpotPictureInput {
   url: String!
+}
+
+input SpotsInput {
+  address: String
+  category: String
+  id: String
+  isCanPark: Boolean
+  isHidden: Boolean
+  orderBy: String
+  profileId: String
+  region: String
+  searchValue: String
+  skip: Float
+  tagListId: [String!]
+  take: Float
 }
 
 type TagEntity {
