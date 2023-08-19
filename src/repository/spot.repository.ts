@@ -106,21 +106,6 @@ export class SpotRepository {
     return plainToClassMany(spotList, SpotEntity);
   }
 
-  // async updateAverageRatingBySpotId(
-  //   spotId: string,
-  //   avg: number,
-  // ): Promise<SpotEntity> {
-  //   const spot = await this.prisma.spot.update({
-  //     where: {
-  //       id: spotId,
-  //     },
-  //     data: {
-  //       averageRating: avg,
-  //     },
-  //   });
-  //   return plainToClass(spot, SpotEntity);
-  // }
-
   async create(
     insertSpotInput: SpotInput,
     profileId: string,
@@ -209,4 +194,21 @@ export class SpotRepository {
   //   });
   //   return spotFind.tags;
   // }
+
+  async updateAverageRatingBySpotId(
+    spotId: string,
+    avg: number,
+  ): Promise<boolean> {
+    return this.prisma.spot
+      .update({
+        where: {
+          id: spotId,
+        },
+        data: {
+          averageRating: avg,
+        },
+      })
+      .then(() => true)
+      .catch(() => false);
+  }
 }

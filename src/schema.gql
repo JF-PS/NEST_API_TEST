@@ -21,17 +21,24 @@ type FavoriteEntity {
   updatedAt: DateTime!
 }
 
+input FavoriteInput {
+  favoriteId: String
+  spotId: String!
+}
+
 type LogoutResponse {
   loggedOut: Boolean!
 }
 
 type Mutation {
+  createOrUpdateRating(ratingInput: RatingInput!): RatingResponse!
   deleteSpot(id: String!): DeleteSpotResponse!
   getNewTokens: NewTokensResponse!
   insertSpot(insertSpotInput: SpotInput!): SpotEntity!
   logout(id: String!): LogoutResponse!
   signIn(signInInput: SignInInput!): SignResponse!
   signUp(signUpInput: SignUpInput!): SignResponse!
+  toggleFavorite(favoriteInput: FavoriteInput!): ToggleFavoriteResponse!
   updateSpot(updateSpotInput: SpotInput!): SpotEntity!
 }
 
@@ -68,6 +75,18 @@ type RatingEntity {
   spot: SpotEntity!
   spotId: String!
   updatedAt: DateTime!
+}
+
+input RatingInput {
+  rate: Float!
+  ratingId: String
+  spotId: String!
+}
+
+type RatingResponse {
+  avg: Float!
+  currentRating: RatingEntity!
+  maxVote: Float!
 }
 
 input SignInInput {
@@ -165,6 +184,11 @@ type TagEntity {
 
 input TagInput {
   id: String!
+}
+
+type ToggleFavoriteResponse {
+  favoriteId: String
+  isFavorite: Boolean!
 }
 
 type UserEntity {
