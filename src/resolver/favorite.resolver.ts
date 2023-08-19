@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 
 import { Public } from '../decorator/public.decorator';
 import { FavoriteEntity } from 'src/entity/favorite.entity';
@@ -12,6 +12,15 @@ import { ToggleFavoriteResponse } from 'src/dto/response/toggle-favorite-respons
 @Resolver(() => FavoriteEntity)
 export class FavoriteResolver {
   constructor(private readonly favoriteBusiness: FavoriteBusiness) {}
+
+  @Public()
+  @UseGuards(RefreshTokenGuard)
+  @Query(() => [FavoriteEntity])
+  spotsProfile(
+    @CurrentProfileId() profileId: string,
+  ): Promise<FavoriteEntity[]> {
+    return this.favoriteBusiness.getAllByProfileId(profileId);
+  }
 
   @Public()
   @UseGuards(RefreshTokenGuard)

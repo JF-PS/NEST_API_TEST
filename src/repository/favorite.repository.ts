@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
+import { plainToClass } from 'src/utils/plain-to-class';
+import { ProfileEntity } from 'src/entity/profile.entity';
 import { PrismaService } from 'src/service/prisma.service';
 
 @Injectable()
 export class FavoriteRepository {
   constructor(private prisma: PrismaService) {}
 
-  async getProfileFavorites(profileId: string) {
-    return this.prisma.profile.findUnique({
+  async getProfileFavorites(profileId: string): Promise<ProfileEntity> {
+    const profile = await this.prisma.profile.findUnique({
       where: {
         id: profileId,
       },
@@ -17,6 +19,8 @@ export class FavoriteRepository {
         },
       },
     });
+
+    return plainToClass(profile, ProfileEntity);
   }
 
   async getById(id: string) {
@@ -34,20 +38,6 @@ export class FavoriteRepository {
         spot: { connect: { id: spotId } },
       },
     });
-
-    // return this.prisma.spot.update({
-    //   where: {
-    //     id: spotId,
-    //   },
-    //   data: {
-    //     favorites: {
-    //       create: {
-    //         profileId,
-    //       },
-    //     },
-    //   },
-    //   include: { favorites: true },
-    // });
   }
 
   delete(spotId: string, favoriteId: string) {

@@ -64,6 +64,7 @@ type ProfileEntity {
 type Query {
   spotByPk(id: String!): SpotEntity!
   spots(spotsInput: SpotsInput!): [SpotEntity!]!
+  spotsProfile: [FavoriteEntity!]!
 }
 
 type RatingEntity {

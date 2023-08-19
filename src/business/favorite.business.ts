@@ -6,6 +6,7 @@ import { SpotRepository } from 'src/repository/spot.repository';
 import { FavoriteInput } from 'src/dto/input/favorite/favorite-input';
 import { FavoriteRepository } from 'src/repository/favorite.repository';
 import { ToggleFavoriteResponse } from 'src/dto/response/toggle-favorite-response';
+import { FavoriteEntity } from 'src/entity/favorite.entity';
 
 const {
   ACCESS_DENIED,
@@ -20,6 +21,13 @@ export class FavoriteBusiness {
     private favoriteRepository: FavoriteRepository,
     private spotRepository: SpotRepository,
   ) {}
+
+  async getAllByProfileId(profileId: string): Promise<FavoriteEntity[]> {
+    const { favorites } = await this.favoriteRepository.getProfileFavorites(
+      profileId,
+    );
+    return favorites;
+  }
 
   async createOrDelete(
     favoriteInput: FavoriteInput,
