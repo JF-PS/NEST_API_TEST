@@ -46,7 +46,8 @@ export class SpotRepository {
   }
 
   async getAll(
-    spotsInput: SpotsInput,
+    spotsInput: Omit<SpotsInput, 'point'>,
+    ids: string[] | undefined,
     profileId?: string | undefined,
   ): Promise<SpotEntity[]> {
     const {
@@ -65,6 +66,9 @@ export class SpotRepository {
 
       where: {
         ...filterData,
+        id: {
+          in: ids,
+        },
         name: {
           contains: searchValue,
         },

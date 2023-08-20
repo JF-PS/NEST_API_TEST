@@ -56,6 +56,15 @@ model Profile {
   updatedAt      DateTime @default(now())
 }
 
+enum GeoJSONPoint {
+  Point
+}
+
+type Location {
+  type GeoJSONPoint
+  coordinates Float[]
+}
+
 model Spot {
   id            String                @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -67,6 +76,7 @@ model Spot {
   profileId     String                @unique @db.ObjectId
   lat           Float
   lng           Float
+  location      Location
   region        String
   address       String
   averageRating Float                 @default(0)

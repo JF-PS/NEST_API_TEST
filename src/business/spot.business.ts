@@ -4,15 +4,19 @@ import { SpotEntity } from 'src/entity/spot.entity';
 import ErrorService from 'src/service/error.service';
 import { codeErrors } from 'src/enum/code-errors.enum';
 import { SpotInput } from 'src/dto/input/spot/spot-input';
+import { SpotsInput } from 'src/dto/input/spot/spots-input';
 import { SpotRepository } from 'src/repository/spot.repository';
 import { DeleteSpotResponse } from 'src/dto/delete-spot-response';
-import { SpotsInput } from 'src/dto/input/spot/spots-input';
+import { SpotGeospatialService } from 'src/service/spot-geospatial.service';
 
 const { SPOT_NOT_FOUND, SPOT_ID_NOT_MATCH_PROFILE_ID } = codeErrors;
 
 @Injectable()
 export class SpotBusiness {
-  constructor(private spotRepository: SpotRepository) {}
+  constructor(
+    private spotRepository: SpotRepository,
+    private geoService: SpotGeospatialService,
+  ) {}
 
   async getById(
     id: string,
@@ -25,7 +29,16 @@ export class SpotBusiness {
     spotsInput: SpotsInput,
     profileId: string | undefined,
   ): Promise<SpotEntity[]> {
-    return this.spotRepository.getAll(spotsInput, profileId);
+    const { point, ...fields } = spotsInput;
+    if (point) {
+      return this.geoService.searchArround(point).then((spotAround: any[]) => {
+        const ids = spotAround.length
+          ? spotAround.map((spot) => spot._id.toHexString())
+          : undefined;
+        return this.spotRepository.getAll(fields, ids, profileId);
+      });
+    }
+    return this.spotRepository.getAll(fields, undefined, profileId);
   }
 
   async insert(

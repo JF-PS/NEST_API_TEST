@@ -1,6 +1,7 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 import { PrismaService } from './service/prisma.service';
@@ -19,6 +20,7 @@ import { FavoriteModule } from './module/favorite.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
     AuthModule,
     SpotModule,
     UserModule,

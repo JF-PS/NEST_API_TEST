@@ -1,5 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { CategoriesSpotAndTag } from '@prisma/client';
+import GraphQLJSON from 'graphql-type-json';
+
+import { GeoPointInput } from '../geo-point/geo-point-input';
 
 @InputType()
 export class SpotsInput {
@@ -35,6 +38,9 @@ export class SpotsInput {
 
   @Field({ nullable: true })
   skip: number;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  point: GeoPointInput;
 
   @Field({ nullable: true })
   take: number;

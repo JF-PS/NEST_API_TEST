@@ -26,6 +26,11 @@ input FavoriteInput {
   spotId: String!
 }
 
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
 type LogoutResponse {
   loggedOut: Boolean!
 }
@@ -119,6 +124,7 @@ type SpotEntity {
   isHidden: Boolean!
   lat: Float!
   lng: Float!
+  location: JSON
   name: String!
   profile: ProfileEntity!
   profileId: String!
@@ -139,6 +145,7 @@ input SpotInput {
   isHidden: Boolean!
   lat: Float!
   lng: Float!
+  location: JSON
   name: String!
   region: String!
   spotPicture: [SpotPictureInput!]
@@ -165,6 +172,7 @@ input SpotsInput {
   isCanPark: Boolean
   isHidden: Boolean
   orderBy: String
+  point: JSON
   profileId: String
   region: String
   searchValue: String

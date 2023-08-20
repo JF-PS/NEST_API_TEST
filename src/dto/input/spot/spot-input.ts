@@ -4,6 +4,8 @@ import { CategoriesSpotAndTag } from '@prisma/client';
 import { Column } from 'typeorm';
 import { SpotPictureInput } from '../spot-picture/spot-picture-input';
 import { TagInput } from '../tag/tag-input';
+import GraphQLJSON from 'graphql-type-json';
+import { Location } from 'src/entity/spot.entity';
 
 @InputType()
 export class SpotInput {
@@ -38,6 +40,10 @@ export class SpotInput {
   @Field()
   @Column('float')
   lng: number;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  @Column('json')
+  location: Location;
 
   @Field()
   @Column()

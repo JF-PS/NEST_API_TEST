@@ -1,5 +1,6 @@
 import { Spot, CategoriesSpotAndTag } from '@prisma/client';
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Float } from '@nestjs/graphql';
+import GraphQLJSON from 'graphql-type-json';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -15,7 +16,14 @@ import { ProfileEntity } from './profile.entity';
 import { FavoriteEntity } from './favorite.entity';
 import { SpotPictureEntity } from './spot-picture.entity';
 
-export class SpotEntityMixin {}
+@ObjectType()
+export class Location {
+  @Field()
+  type: 'Point';
+
+  @Field(() => [Float])
+  coordinates: [number, number];
+}
 
 @ObjectType()
 @Entity('Spot')
@@ -59,6 +67,10 @@ export class SpotEntity implements Spot {
   @Field()
   @Column('float')
   lng: number;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  @Column('json')
+  location: Location;
 
   @Field()
   @Column()
