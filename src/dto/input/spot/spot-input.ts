@@ -3,7 +3,7 @@ import { CategoriesSpotAndTag } from '@prisma/client';
 
 import { Column } from 'typeorm';
 import { SpotPictureInput } from '../spot-picture/spot-picture-input';
-import { TagInput } from '../tag/tag-input';
+import { TagInput } from '../tag/tag.input';
 import GraphQLJSON from 'graphql-type-json';
 import { Location } from 'src/entity/spot.entity';
 

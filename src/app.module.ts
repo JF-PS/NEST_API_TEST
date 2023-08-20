@@ -11,6 +11,7 @@ import { SpotModule } from 'src/module/spot.module';
 import { ConfigModule } from '@nestjs/config';
 import { RatingModule } from './module/rating.module';
 import { FavoriteModule } from './module/favorite.module';
+import { TagModule } from './module/tag.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { FavoriteModule } from './module/favorite.module';
     AuthModule,
     SpotModule,
     UserModule,
+    TagModule,
     RatingModule,
     FavoriteModule,
   ],

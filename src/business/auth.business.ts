@@ -75,6 +75,7 @@ export class AuthBusiness {
       user.id,
       user.email,
       user.profile.id,
+      user.role,
     );
 
     const hashedRefreshToken = await hash(refreshToken, 10);

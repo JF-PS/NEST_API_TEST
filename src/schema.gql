@@ -7,7 +7,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type DeleteSpotResponse {
+type DeleteResponse {
   deleted: Boolean!
 }
 
@@ -37,14 +37,17 @@ type LogoutResponse {
 
 type Mutation {
   createOrUpdateRating(ratingInput: RatingInput!): RatingResponse!
-  deleteSpot(id: String!): DeleteSpotResponse!
+  deleteSpot(id: String!): DeleteResponse!
+  deleteTag(id: String!): DeleteResponse!
   getNewTokens: NewTokensResponse!
   insertSpot(insertSpotInput: SpotInput!): SpotEntity!
+  insertTag(tagInsertInput: TagInsertInput!): TagEntity!
   logout(id: String!): LogoutResponse!
   signIn(signInInput: SignInInput!): SignResponse!
   signUp(signUpInput: SignUpInput!): SignResponse!
   toggleFavorite(favoriteInput: FavoriteInput!): ToggleFavoriteResponse!
   updateSpot(updateSpotInput: SpotInput!): SpotEntity!
+  updateTag(tagUpdateInput: TagUpdateInput!): TagEntity!
 }
 
 type NewTokensResponse {
@@ -70,6 +73,8 @@ type Query {
   spotByPk(id: String!): SpotEntity!
   spots(spotsInput: SpotsInput!): [SpotEntity!]!
   spotsProfile: [FavoriteEntity!]!
+  tagByPk(id: String!): TagEntity!
+  tags(tagListInput: TagListInput!): [TagEntity!]!
 }
 
 type RatingEntity {
@@ -193,6 +198,23 @@ type TagEntity {
 
 input TagInput {
   id: String!
+}
+
+input TagInsertInput {
+  category: String
+  name: String
+  tagPictureUrl: String
+}
+
+input TagListInput {
+  category: String
+  ids: [String!]
+  searchValue: String
+}
+
+input TagUpdateInput {
+  id: String
+  tagPictureUrl: String
 }
 
 type ToggleFavoriteResponse {

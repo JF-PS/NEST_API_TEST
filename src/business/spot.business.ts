@@ -8,6 +8,7 @@ import { SpotsInput } from 'src/dto/input/spot/spots-input';
 import { SpotRepository } from 'src/repository/spot.repository';
 import { DeleteSpotResponse } from 'src/dto/delete-spot-response';
 import { SpotGeospatialService } from 'src/service/spot-geospatial.service';
+import { DeleteResponse } from 'src/dto/response/delete.response';
 
 const { SPOT_NOT_FOUND, SPOT_ID_NOT_MATCH_PROFILE_ID } = codeErrors;
 
@@ -31,7 +32,7 @@ export class SpotBusiness {
   ): Promise<SpotEntity[]> {
     const { point, ...fields } = spotsInput;
     if (point) {
-      return this.geoService.searchArround(point).then((spotAround: any[]) => {
+      return this.geoService.searchArround(point).then((spotAround) => {
         const ids = spotAround.length
           ? spotAround.map((spot) => spot._id.toHexString())
           : undefined;
@@ -66,7 +67,7 @@ export class SpotBusiness {
       throw new ErrorService(SPOT_ID_NOT_MATCH_PROFILE_ID);
   }
 
-  async delete(id: string, profileId: string): Promise<DeleteSpotResponse> {
+  async delete(id: string, profileId: string): Promise<DeleteResponse> {
     const deleted = await this.spotRepository.delete(id, profileId);
     return { deleted };
   }

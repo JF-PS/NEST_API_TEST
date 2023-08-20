@@ -7,9 +7,9 @@ import { SpotInput } from 'src/dto/input/spot/spot-input';
 import { CurrentProfileId } from 'src/decorator/currentProfileId.decorator.';
 import { UseGuards } from '@nestjs/common';
 import { RefreshTokenGuard } from 'src/guard/refreshToken.guard';
-import { DeleteSpotResponse } from 'src/dto/delete-spot-response';
 import { SpotsInput } from 'src/dto/input/spot/spots-input';
 import { AccessTokenGuard } from 'src/guard/accessToken.guard';
+import { DeleteResponse } from 'src/dto/response/delete.response';
 
 @Resolver(() => SpotEntity)
 export class SpotResolver {
@@ -56,11 +56,11 @@ export class SpotResolver {
 
   @Public()
   @UseGuards(RefreshTokenGuard)
-  @Mutation(() => DeleteSpotResponse)
+  @Mutation(() => DeleteResponse)
   deleteSpot(
     @Args('id', { type: () => String }) id: string,
     @CurrentProfileId() profileId: string,
-  ): Promise<DeleteSpotResponse> {
+  ): Promise<DeleteResponse> {
     return this.spotBusiness.delete(id, profileId);
   }
 }

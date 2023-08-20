@@ -2,13 +2,13 @@ import { Field, InputType } from '@nestjs/graphql';
 import { CategoriesSpotAndTag } from 'src/entity/categories-spot-and-tag.enum';
 
 @InputType()
-export class TagListInput {
+export class TagInsertInput {
   @Field({ nullable: true })
-  searchValue?: string;
-
-  @Field(() => [String], { nullable: true })
-  ids?: string[];
+  name: string;
 
   @Field({ nullable: true })
-  category?: CategoriesSpotAndTag;
+  tagPictureUrl: string;
+
+  @Field({ nullable: true })
+  category: CategoriesSpotAndTag;
 }
